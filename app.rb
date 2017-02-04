@@ -10,3 +10,7 @@ end
 get "/" do
   params['hub.challenge']
 end
+
+#get "/image" do
+#	"<img src='https://b61fceae.ngrok.io/images/test_img.png'>"
+#end

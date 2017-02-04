@@ -3,6 +3,7 @@ include Facebook::Messenger
 # NOTE: ENV variables should be set directly in terminal for testing on localhost
 require 'uri'
 require 'net/http'
+require 'fastimage'
  
 cog_url = URI("https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age%2Cgender")
 
@@ -15,11 +16,31 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["ACCESS_TOKEN"])
  
 Bot.on :message do |message|
 
-	puts message.attachments.to_s
+	#puts request.base_url
+	#puts message.attachments.to_s
 	img_url = message.attachments[0]['payload']['url']
+	#puts img_url
 
-	getCoorInfo(cog_url, img_url, http)
+	dimensions = FastImage.size(img_url);
+	
+	img_width = dimensions[0];
+	img_height = dimensions[1];
+	
+	getCoorInfo(cog_url, img_url, http, img_width, img_height)
 
+	
+
+	message.reply(
+	  	attachment: {
+	    		type: 'image',
+	    		payload: {
+	      		url: 'https://b61fceae.ngrok.io/images/test_img.png'
+	    		}
+	  	} 
+	) 
+
+
+=begin
 	message.reply(
 	  	attachment: {
 	    		type: 'image',
@@ -27,12 +48,12 @@ Bot.on :message do |message|
 	      		url: img_url
 	    		}
 	  	} 
-	)
-
+	) 
+=end
 	#message.reply(text: 'ayy lmao')
 end
 
-def getCoorInfo(cog_url, img_url, http)  
+def getCoorInfo(cog_url, img_url, http, img_width, img_height)  
   request = Net::HTTP::Post.new(cog_url)
   request["ocp-apim-subscription-key"] = File.open('apikey', &:readline)[0..-2]
   request["content-type"] = 'application/json'
@@ -46,6 +67,7 @@ def getCoorInfo(cog_url, img_url, http)
   res = JSON.parse(res)
   #puts res
     
+=begin
   res.each do |face|
     puts "***"
 	puts face['faceRectangle']
@@ -55,6 +77,21 @@ def getCoorInfo(cog_url, img_url, http)
 	puts 'mouth left: ' + face['faceLandmarks']['mouthLeft'].to_s
 	puts 'mouth right: ' + face['faceLandmarks']['mouthRight'].to_s
   end
+=end
+
+	top1 = res[0]['faceRectangle']['top']
+	top2 = res[1]['faceRectangle']['top']
+	left1 = res[0]['faceRectangle']['left']
+	left2 = res[1]['faceRectangle']['left']
+	width1 = res[0]['faceRectangle']['width']
+	width2 = res[1]['faceRectangle']['width']
+	height1 = res[0]['faceRectangle']['height']
+	height2 = res[1]['faceRectangle']['height']
+	puts img_url
+	
+system("./application.linux64/QHacks '#{img_url}' '#{top1}' '#{left1}' '#{width1}' '#{height1}' '#{top2}' '#{left2}' '#{width2}' '#{height2}'") 
+
+
 
 end  
 

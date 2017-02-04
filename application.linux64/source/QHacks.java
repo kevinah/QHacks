@@ -164,6 +164,9 @@ public void draw() {
   //blend(face1, left2, top2, width2, height2, left, top, height, width, DARKEST);
   image(face2, left, top);
   
+  saveFrame("../public/images/test_img.png");
+  
+  exit();
 }
   public void settings() {  size(640,480); }
   static public void main(String[] passedArgs) {
