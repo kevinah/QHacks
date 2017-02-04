@@ -1,0 +1,51 @@
+PImage face;
+PImage stache;
+
+int left = 321;
+int top = 430;
+int width = 148;
+int height = 148;
+int midpointx;
+int midpointy;
+float pupilLeftx = 360.5;
+float pupilLefty = 471.8;
+float pupilRightx = 432.8;
+float pupilRighty = 471.5;
+float noseTipx = 392.2;
+float noseTipy = 501.9;
+float mouthLeftx = 368.5;
+float mouthLefty = 539.2;
+float mouthRightx = 419;
+float mouthRighty = 542.5;
+
+
+void setup() {
+  size(800,800);
+  face = loadImage("https://scontent-yyz1-1.xx.fbcdn.net/v/t1.0-9/14333047_10153958754217709_1410438263697835106_n.jpg?oh=27a5f81b9922aae04f8074b7d5cdeaf5&oe=58FF2B91");
+  String url = "https://d30y9cdsu7xlg0.cloudfront.net/png/1642-200.png";
+  stache = loadImage(url, "png");
+}
+
+void draw() {
+  background(0);
+  image(face,0,0);
+  image(stache,mouthLeftx,(noseTipy),(mouthRightx-mouthLeftx),(mouthRighty-noseTipy));
+  
+  fill(0,255,0);
+  //pupilLeft
+  ellipse(pupilLeftx,pupilLefty,10,10);
+  //pupilRight
+  ellipse(pupilRightx,pupilRighty,10,10);
+  //noseTip
+  ellipse(noseTipx,noseTipy,10,10);
+  //mouthLeft
+  ellipse(mouthLeftx,mouthLefty,10,10);
+  //mouthRight
+  ellipse(mouthRightx,mouthRighty,10,10);
+  
+  //faceciccle
+  midpointx = left+(width/2);
+  midpointy = top+(height/2);
+  noFill();
+  ellipse(midpointx,midpointy,width,height);
+}
