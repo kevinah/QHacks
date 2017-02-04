@@ -1,6 +1,7 @@
 # QHacks - SMILE QUEUE
 NEXT LEVEL APPLICATION WOW
 
+![logo](https://github.com/kevinah/QHacks/blob/master/smile%20queue.png)
 
 It is scientifically proven that physically smiling makes you feel better mentally. This hack aims to bring people together and demonstrates that one smile can lead to many.
 
