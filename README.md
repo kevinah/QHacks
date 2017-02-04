@@ -21,3 +21,6 @@ Promote awareness for mental health by instantly growing a moustache with your f
 
 #### Technologies used:
 Sinatra (Ruby), Processing, git, ngrok, Microsoft Cognitive Services, Facebook Messenger Platform
+
+<hr>
+Special thanks to Andy B for his [tutorial](https://hackernoon.com/smooth-coordinator-1427dce17f00#.flz3cx5pv) which we used for basic Sinatra bot setup.
