@@ -14,12 +14,11 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["ACCESS_TOKEN"])
  
 Bot.on :message do |message|
-	#text: message.text)
 
-	puts "***" + message.attachments.to_s
+	puts message.attachments.to_s
 	img_url = message.attachments[0]['payload']['url']
 
-	getInfo(cog_url, img_url, http)
+	getCoorInfo(cog_url, img_url, http)
 
 	message.reply(
 	  	attachment: {
@@ -30,10 +29,10 @@ Bot.on :message do |message|
 	  	} 
 	)
 
-	message.reply(text: 'ayy lmao')
+	#message.reply(text: 'ayy lmao')
 end
 
-def getInfo(cog_url, img_url, http)  
+def getCoorInfo(cog_url, img_url, http)  
   request = Net::HTTP::Post.new(cog_url)
   request["ocp-apim-subscription-key"] = File.open('apikey', &:readline)[0..-2]
   request["content-type"] = 'application/json'
@@ -42,6 +41,20 @@ def getInfo(cog_url, img_url, http)
   request.body = "{\r\n    \"url\":\"" + img_url + "\"\r\n}"
  
   response = http.request(request) 
-  puts response.read_body
+  #puts response.read_body
+  res = response.read_body
+  res = JSON.parse(res)
+  #puts res
+    
+  res.each do |face|
+    puts "***"
+	puts face['faceRectangle']
+	puts 'left pupil: ' + face['faceLandmarks']['pupilLeft'].to_s
+	puts 'right pupil: ' + face['faceLandmarks']['pupilRight'].to_s
+	puts 'nose tip: ' + face['faceLandmarks']['noseTip'].to_s
+	puts 'mouth left: ' + face['faceLandmarks']['mouthLeft'].to_s
+	puts 'mouth right: ' + face['faceLandmarks']['mouthRight'].to_s
+  end
+
 end  
 
