@@ -113,25 +113,19 @@ public void settings() {
  
 void draw() {
   background(0);
-  //imageMode(CENTER);
   image(picture,0,0);
   
   if (mode.equals("faceswap")) {
     face1 = get(left1,top1,width1,height1);
     face2 = get(left2,top2,width2,height2);
     
-    
-     
     mask1.resize(face1.width, face1.height);
     face1.mask(mask1);
-  
     face1.resize(width2, height2);
-    
     image(face1, left2, top2);
   
     mask2.resize(face2.width, face2.height);
     face2.mask(mask2);
-  
     face2.resize(width1, height1);
     image(face2, left1, top1);
     

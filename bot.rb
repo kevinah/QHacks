@@ -6,6 +6,7 @@ require 'net/http'
 require 'fastimage'
  
 cog_url = URI("https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age%2Cgender")
+emo_url = URI("https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
 
 http = Net::HTTP.new(cog_url.host, cog_url.port)
 http.use_ssl = true
@@ -23,28 +24,28 @@ Bot.on :message do |message|
 		
 		if(File.open('mode', &:readline) == "faceswap")
 			img_url = message.attachments[0]['payload']['url']
-				#puts img_url
+			#puts img_url
 
-				dimensions = FastImage.size(img_url);
-	
-				img_width = dimensions[0];
-				img_height = dimensions[1];
-	
-				puts img_width
-				puts img_height
-	
-				getCoorInfo(cog_url, img_url, http, img_width, img_height)
+			dimensions = FastImage.size(img_url);
 
-	
+			img_width = dimensions[0];
+			img_height = dimensions[1];
 
-				message.reply(
-				  	attachment: {
-				    		type: 'image',
-				    		payload: {
-				      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
-				    		}
-				  	} 
-				)
+			puts img_width
+			puts img_height
+
+			getCoorInfo(cog_url, img_url, http, img_width, img_height)
+
+
+
+			message.reply(
+			  	attachment: {
+			    		type: 'image',
+			    		payload: {
+			      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
+			    		}
+			  	} 
+			)
 			message.reply(text: 'You got SWAPPED!')	
 		elsif (File.open('mode', &:readline) == "moustache")
 			img_url = message.attachments[0]['payload']['url']
@@ -70,7 +71,27 @@ Bot.on :message do |message|
 				    		}
 				  	} 
 				)
-			message.reply(text: "Soon we'll be putting moustaches on cats and dogs and... snakes.")	
+			message.reply(text: "Soon we'll be putting moustaches on cats and dogs and... snakes.")
+		elsif (File.open('mode', &:readline) == "smile")
+			img_url = message.attachments[0]['payload']['url']
+			#puts img_url
+
+			dimensions = FastImage.size(img_url);
+
+			img_width = dimensions[0];
+			img_height = dimensions[1];
+
+			findHappiest(emo_url, img_url, http, img_width, img_height)
+
+			message.reply(
+				  	attachment: {
+				    		type: 'image',
+				    		payload: {
+				      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
+				    		}
+				  	} 
+				)
+			message.reply(text: "Winner!!!")	
 		else
 			message.reply(text: 'Please set mode!')
 		end
@@ -83,10 +104,14 @@ Bot.on :message do |message|
 		elsif (message.text == "GIMME STACHE!")	
 			File.write('mode', 'moustache')
 			message.reply(text: 'Ready to moustache-ify! Send an image!')
+		elsif (message.text == "SMILING CONTEST!")	
+			File.write('mode', 'smile')
+			message.reply(text: 'Smile as big as you can, whoever looks happiest wins!')
+
 		elsif (message.text == "GREEN ME!")
-			gDim = FastImage.size('https://f0d9fabc.ngrok.io/images/test_img.png');
-			gWid = gDim[0]
-			gHei = gDim[1]
+			dimensions = FastImage.size('https://f0d9fabc.ngrok.io/images/test_img.png');
+			img_width = dimensions[0];
+			img_height = dimensions[1];
 			doGreen(gWid, gHei);
 			message.reply(
 				  attachment: {
@@ -100,11 +125,48 @@ Bot.on :message do |message|
 			message.reply(text: "I didn't understand that.")
 		end
 	end
+
 	#message.reply(text: 'ayy lmao')
 end
 
 def doGreen(gWid, gHei) 
 	system("./Greenify/application.linux64/Greenify '#{gWid}' '#{gHei}'")
+end
+
+def findHappiest(emo_url, img_url, http, img_width, img_height)
+	request = Net::HTTP::Post.new(emo_url)
+	request["ocp-apim-subscription-key"] = File.open('apikey2', &:readline)[0..-2]
+	request["content-type"] = 'application/json'
+	request["cache-control"] = 'no-cache'
+	request["postman-token"] = '1f0a089a-a2e9-9f9c-c923-ad27c29b6e3c'
+	request.body = "{ \n\t\"url\": \"" + img_url + "\" \n}"
+
+	response = http.request(request)
+	res = response.read_body
+
+	res = JSON.parse(res)
+
+	top_score = 0
+	top_score_index = 0
+
+	index = 0
+	puts res
+	res.each do |face|
+		happiness = face['scores']['happiness']
+		if happiness > top_score
+			top_score = happiness
+			top_score_index = index
+		end
+		index += 1
+	end
+	
+	top = res[top_score_index]['faceRectangle']['top']
+	left = res[top_score_index]['faceRectangle']['left']
+	width = res[top_score_index]['faceRectangle']['width']
+	height = res[top_score_index]['faceRectangle']['height']
+		
+	
+	system("./Happy/application.linux64/Happy '#{img_url}' '#{top}' '#{left}' '#{width}' '#{height}' '#{img_width}' '#{img_height}'")
 end
 
 def getCoorInfo(cog_url, img_url, http, img_width, img_height)  
