@@ -43,18 +43,18 @@ PImage stache;
   
   String mode;
   
-  float horiDistL1;
-  float vertDistL1;
-  float horiDistR1;
-  float vertDistR1;
-  
-  float horiDistL2;
-  float vertDistL2;
-  float horiDistR2;
-  float vertDistR2;
+  float horiDistLF;
+  float vertDistLF;
+  float horiDistRF;
+  float vertDistRF;
   
   float leftRotate;
   float rightRotate;
+  
+  int LL = 0;
+  int RR = 0;
+  int LR = 0;
+  int RL = 0;
 
 
 void setup() {
@@ -113,28 +113,23 @@ public void settings() {
  
 void draw() {
   background(0);
-  //imageMode(CENTER);
   image(picture,0,0);
   
   if (mode.equals("faceswap")) {
     face1 = get(left1,top1,width1,height1);
     face2 = get(left2,top2,width2,height2);
     
-    
-     
     mask1.resize(face1.width, face1.height);
     face1.mask(mask1);
-  
     face1.resize(width2, height2);
-    
-    image(face1, left2, top2);
+    //image(face1, left2, top2);
   
     mask2.resize(face2.width, face2.height);
     face2.mask(mask2);
-  
     face2.resize(width1, height1);
-    image(face2, left1, top1);
+    //image(face2, left1, top1);
     
+    rotateFaces();
     
     saveFrame("../public/images/test_img.png");
   }
@@ -147,8 +142,110 @@ void draw() {
     
     saveFrame("../public/images/test_img.png");
   }
-   
-  
-  
   exit();
+}
+
+void rotateFaces() {
+  // FACE 1 LEFT
+  //means it is left pupil in image one is higher than right (rotate right)
+  if (pupilLefty1 > pupilRighty1 && pupilLefty2 > pupilRighty2) { //Both slanted left
+      System.out.println("FACE 1 SLANTED LEFT");
+      vertDistLF = pupilLefty1 - pupilRighty1;
+      horiDistLF = pupilRightx1 - pupilLeftx1;
+      System.out.println("val1:" + vertDistLF);
+      System.out.println("val2:" + horiDistLF);
+      System.out.println("FACE 2 SLANTED LEFT");
+      vertDistRF = pupilLefty2 - pupilRighty2;
+      horiDistRF = pupilRightx2 - pupilLeftx2;
+      System.out.println("val1:" + vertDistRF);
+      System.out.println("val2:" + horiDistRF);
+      leftRotate = atan(vertDistLF/horiDistLF);
+      rightRotate = atan(vertDistRF/horiDistRF);
+      LL = 1;
+      RR = 0;
+      LR = 0;
+      RL = 0;
+  } else if (pupilLefty1 < pupilRighty1 && pupilLefty2 < pupilRighty2) { //both slanted right
+      System.out.println("FACE 1 SLANTED RIGHT");
+      vertDistLF = pupilRighty1 - pupilLefty1;
+      horiDistLF = pupilRightx1 - pupilLeftx1;
+      System.out.println("FACE 2 SLANTED RIGHT");
+      vertDistRF = pupilRighty2 - pupilLefty2;
+      horiDistRF = pupilRightx2 - pupilLeftx2;
+      leftRotate = atan(vertDistRF/horiDistRF);
+      rightRotate = atan(vertDistLF/horiDistLF);
+      LL = 0;
+      RR = 1;
+      LR = 0;
+      RL = 0;
+  } else if (pupilLefty1 > pupilRighty1 && pupilLefty2 < pupilRighty2) { //1 slanted left 2 slanted right
+      System.out.println("FACE 1 SLANTED LEFT");
+      vertDistLF = pupilLefty1 - pupilRighty1;
+      horiDistLF = pupilRightx1 - pupilLeftx1;
+      System.out.println("FACE 2 SLANTED RIGHT");
+      vertDistRF = pupilRighty2 - pupilLefty2;
+      horiDistRF = pupilRightx2 - pupilLeftx2;
+      leftRotate = atan(vertDistLF/horiDistLF);
+      rightRotate = atan(vertDistRF/horiDistRF);
+      LL = 0;
+      RR = 0;
+      LR = 1;
+      RL = 0;
+  } else if (pupilLefty1 < pupilRighty1 && pupilLefty2 > pupilRighty2) { //1 slanted right 2 slanted left
+      System.out.println("FACE 1 SLANTED RIGHT");
+      vertDistLF = pupilRighty1 - pupilLefty1;
+      horiDistLF = pupilRightx1 - pupilLeftx1;
+      System.out.println("FACE 2 SLANTED LEFT");
+      vertDistRF = pupilLefty2 - pupilRighty2;
+      horiDistRF = pupilRightx2 - pupilLeftx2;
+      leftRotate = atan(vertDistLF/horiDistLF);
+      rightRotate = atan(vertDistRF/horiDistRF);
+      LL = 0;
+      RR = 0;
+      LR = 0;
+      RL = 1;
+  } else {
+      leftRotate = 0;
+      rightRotate = 0;
+  }
+  
+  System.out.println("Left Rotation: "+ leftRotate);
+  System.out.println("Right Rotation: "+ rightRotate);
+  
+  //FACE 1 is NOAM FACE 2 is KEVIN
+  //FACE 1
+  pushMatrix();
+  translate(left1 + face1.width/2, top1 + face1.height/2);
+  //rotate(rightRotate-leftRotate); //(leftRotate)SR SL, (rightRotate-leftRotate) SL SL, (-(rightRotate + leftRotate)) SL SR
+  if ((LL == 0) && (RR == 0) && (RL == 1) && (LR == 0)) {
+    rotate(leftRotate);
+  } else if ((LL == 1) && (RR == 0) && (RL == 0) && (LR == 0)) {
+    rotate(rightRotate-leftRotate);
+  } else if ((LL == 0) && (RR == 1) && (RL == 0) && (LR == 0)) {
+    rotate(rightRotate-leftRotate);
+  } else if ((LL == 0) && (RR == 0) && (RL == 0) && (LR == 1)) {
+    rotate(rightRotate-leftRotate);
+  }
+  translate(-face1.width/2, -face1.height/2);
+   //Draw Face in top left
+  image(face2, 0, 0);
+  popMatrix(); 
+  
+  //FACE 2
+  pushMatrix();
+  translate(left2 + face2.width/2, top2 + face2.height/2);
+  //  rotate(leftRotate-rightRotate); //(rightRotate - leftRotate)SR SL, (rightRotate) SL SL,(rightRotate + leftRotate) SL SR
+  if ((LL == 0) && (RR == 0) && (RL == 1) && (LR == 0)) {
+    rotate(rightRotate - leftRotate);
+  } else if ((LL == 1) && (RR == 0) && (RL == 0) && (LR == 0)) {
+    rotate(rightRotate);
+  } else if ((LL == 0) && (RR == 1) && (RL == 0) && (LR == 0)) {
+    rotate(leftRotate-rightRotate);
+  } else if ((LL == 0) && (RR == 0) && (RL == 0) && (LR == 1)) {
+    rotate(leftRotate-rightRotate);
+  }
+  translate(-face2.width/2, -face2.height/2);
+   //Draw Face in top left
+  image(face1, 0, 0);
+  popMatrix();
 }

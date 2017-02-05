@@ -4,6 +4,8 @@ include Facebook::Messenger
 require 'uri'
 require 'net/http'
 require 'fastimage'
+
+access_token = File.open('access_token', &:readline)[0..-2]
  
 cog_url = URI("https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age%2Cgender")
 emo_url = URI("https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
@@ -124,8 +126,11 @@ Bot.on :message do |message|
 			    		}
 			  	} 
 			)
+		elsif message.text == "help"
+			message.reply(text: 'Available commands: "FACESWAP!", "GIMME STACHE!", "SMILING CONTEST!", "GREEN ME!"')
+
 		else
-			message.reply(text: "I didn't understand that.")
+			message.reply(text: %Q|I didn't understand that. Type "help" for options.|)
 		end
 	end
 
