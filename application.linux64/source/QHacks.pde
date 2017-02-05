@@ -1,6 +1,8 @@
 PImage picture;
 PImage face1;
 PImage face2;
+PImage mask1;
+PImage mask2;
 //PImage stache;
 
   int img_wdt;
@@ -8,8 +10,8 @@ PImage face2;
   String img_url; 
   int top;
   int left;
-  int width;
-  int height;
+  int width1;
+  int height1;
 
   int midpointx;
   int midpointy;
@@ -52,11 +54,13 @@ PImage face2;
 
 
 void setup() {
+  
+  
   img_url = args[0]; 
   top = Integer.parseInt(args[1]);
   left = Integer.parseInt(args[2]);
-  width = Integer.parseInt(args[3]);
-  height = Integer.parseInt(args[4]);
+  width1 = Integer.parseInt(args[3]);
+  height1 = Integer.parseInt(args[4]);
 
   //float pupilLeftx = Float.parseFloat(args[5]);
   //float pupilLefty = Float.parseFloat(args[6]);
@@ -93,11 +97,16 @@ void setup() {
   //img_wdt=Integer.parseInt(args[9]);
   //img_hgt=Integer.parseInt(args[10]);
   //size(img_wdt, img_hgt);
-  size(640,480);
-  picture = loadImage(img_url);
   
+  picture = loadImage(img_url);
+  mask1 = loadImage("PImageMask.png");
+  mask2 = loadImage("PImageMask2.png");
   //String url = "https://d30y9cdsu7xlg0.cloudfront.net/png/1642-200.png";
   //stache = loadImage(url, "png");
+}
+
+public void settings() {
+   size(Integer.parseInt(args[9]),Integer.parseInt(args[10])); 
 }
  
 void draw() {
@@ -118,10 +127,10 @@ void draw() {
   //ellipse(mouthRightx,mouthRighty,10,10);
   
   //faceciccle
-  midpointx = left+(width/2);
-  midpointy = top+(height/2);
-  noFill();
-  ellipse(midpointx,midpointy,width,height);
+  //midpointx = left+(width/2);
+  //midpointy = top+(height/2);
+  //noFill();
+  //ellipse(midpointx,midpointy,width,height);
  
   //fill(0,255,0);
   //pupilLeft2
@@ -136,16 +145,29 @@ void draw() {
   //ellipse(mouthRightx2,mouthRighty2,10,10);
  
   //faceciccle
-  midpointx2 = left2+(width2/2);
-  midpointy2 = top2+(height2/2);
-  noFill();
-  ellipse(midpointx2,midpointy2,width2,height2);
- 
-  face1 = get(left,top,width,height);
+  //midpointx2 = left2+(width2/2);
+  //midpointy2 = top2+(height2/2);
+  //noFill();
+  //ellipse(midpointx2,midpointy2,width2,height2);
+  
+  
+   
+  face1 = get(left,top,width1,height1);
   face2 = get(left2,top2,width2,height2);
  
+
+  mask1.resize(face1.width, face1.height);
+  face1.mask(mask1);
+   
   image(face1, left2, top2);
+  
+  
+  
   //blend(face1, left2, top2, width2, height2, left, top, height, width, DARKEST);
+  
+  mask2.resize(face2.width, face2.height);
+  face2.mask(mask2);
+  
   image(face2, left, top);
   
   saveFrame("../public/images/test_img.png");

@@ -26,6 +26,9 @@ Bot.on :message do |message|
 	img_width = dimensions[0];
 	img_height = dimensions[1];
 	
+	puts img_width
+	puts img_height
+	
 	getCoorInfo(cog_url, img_url, http, img_width, img_height)
 
 	
@@ -34,11 +37,10 @@ Bot.on :message do |message|
 	  	attachment: {
 	    		type: 'image',
 	    		payload: {
-	      		url: 'https://b61fceae.ngrok.io/images/test_img.png'
+	      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
 	    		}
 	  	} 
-	) 
-
+	)
 
 =begin
 	message.reply(
@@ -87,9 +89,9 @@ def getCoorInfo(cog_url, img_url, http, img_width, img_height)
 	width2 = res[1]['faceRectangle']['width']
 	height1 = res[0]['faceRectangle']['height']
 	height2 = res[1]['faceRectangle']['height']
-	puts img_url
+	#puts img_url
 	
-system("./application.linux64/QHacks '#{img_url}' '#{top1}' '#{left1}' '#{width1}' '#{height1}' '#{top2}' '#{left2}' '#{width2}' '#{height2}'") 
+system("./application.linux64/QHacks '#{img_url}' '#{top1}' '#{left1}' '#{width1}' '#{height1}' '#{top2}' '#{left2}' '#{width2}' '#{height2}' '#{img_width}' '#{img_height}'") 
 
 
 
