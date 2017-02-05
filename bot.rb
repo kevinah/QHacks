@@ -13,10 +13,9 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
  
 # Subcribe bot to your page
 Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["ACCESS_TOKEN"])
- 
+
 Bot.on :message do |message|
 
-	
 	#puts request.base_url
 	#puts message.attachments.to_s
 	if(message.attachments)
@@ -48,7 +47,30 @@ Bot.on :message do |message|
 				)
 			message.reply(text: 'You got SWAPPED!')	
 		elsif (File.open('mode', &:readline) == "moustache")
-			message.reply(text: 'moustache mode is pending...')
+			img_url = message.attachments[0]['payload']['url']
+				#puts img_url
+
+				dimensions = FastImage.size(img_url);
+	
+				img_width = dimensions[0];
+				img_height = dimensions[1];
+	
+				puts img_width
+				puts img_height
+	
+				getCoorInfo(cog_url, img_url, http, img_width, img_height)
+
+	
+
+				message.reply(
+				  	attachment: {
+				    		type: 'image',
+				    		payload: {
+				      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
+				    		}
+				  	} 
+				)
+			message.reply(text: "Soon we'll be putting moustaches on cats and dogs and... snakes.")	
 		else
 			message.reply(text: 'Please set mode!')
 		end
@@ -66,18 +88,6 @@ Bot.on :message do |message|
 		end
 	end
 
-
-
-=begin
-	message.reply(
-	  	attachment: {
-	    		type: 'image',
-	    		payload: {
-	      		url: img_url
-	    		}
-	  	} 
-	) 
-=end
 	#message.reply(text: 'ayy lmao')
 end
 
@@ -108,16 +118,39 @@ def getCoorInfo(cog_url, img_url, http, img_width, img_height)
 =end
 
 	top1 = res[0]['faceRectangle']['top']
-	top2 = res[1]['faceRectangle']['top']
 	left1 = res[0]['faceRectangle']['left']
-	left2 = res[1]['faceRectangle']['left']
 	width1 = res[0]['faceRectangle']['width']
-	width2 = res[1]['faceRectangle']['width']
 	height1 = res[0]['faceRectangle']['height']
-	height2 = res[1]['faceRectangle']['height']
-	#puts img_url
+	pupilLeftx1 = res[0]['faceLandmarks']['pupilLeft']['x']
+	pupilLefty1 = res[0]['faceLandmarks']['pupilLeft']['y']
+	pupilRightx1 = res[0]['faceLandmarks']['pupilRight']['x']
+	pupilRighty1 = res[0]['faceLandmarks']['pupilRight']['y']
+	noseTipx1 = res[0]['faceLandmarks']['noseTip']['x']
+	noseTipy1 = res[0]['faceLandmarks']['noseTip']['y']
+	mouthLeftx1 = res[0]['faceLandmarks']['mouthLeft']['x']
+	mouthLefty1 = res[0]['faceLandmarks']['mouthLeft']['y']
+	mouthRightx1 = res[0]['faceLandmarks']['mouthRight']['x']
+	mouthRighty1 = res[0]['faceLandmarks']['mouthRight']['y']
 	
-system("./application.linux64/QHacks '#{img_url}' '#{top1}' '#{left1}' '#{width1}' '#{height1}' '#{top2}' '#{left2}' '#{width2}' '#{height2}' '#{img_width}' '#{img_height}'") 
+	#puts img_url
+	top2 = res[1]['faceRectangle']['top']
+	left2 = res[1]['faceRectangle']['left']
+	width2 = res[1]['faceRectangle']['width']
+	height2 = res[1]['faceRectangle']['height']
+	pupilLeftx2 = res[1]['faceLandmarks']['pupilLeft']['x']
+	pupilLefty2 = res[1]['faceLandmarks']['pupilLeft']['y']
+	pupilRightx2 = res[1]['faceLandmarks']['pupilRight']['x']
+	pupilRighty2 = res[1]['faceLandmarks']['pupilRight']['y']
+	noseTipx2 = res[1]['faceLandmarks']['noseTip']['x']
+	noseTipy2 = res[1]['faceLandmarks']['noseTip']['y']
+	mouthLeftx2 = res[1]['faceLandmarks']['mouthLeft']['x']
+	mouthLefty2 = res[1]['faceLandmarks']['mouthLeft']['y']
+	mouthRightx2 = res[1]['faceLandmarks']['mouthRight']['x']
+	mouthRighty2 = res[1]['faceLandmarks']['mouthRight']['y']
+
+	mode = File.open('mode', &:readline);
+
+system("./application.linux64/QHacks '#{img_url}' '#{top1}' '#{left1}' '#{width1}' '#{height1}' '#{pupilLeftx1}' '#{pupilLefty1}' '#{pupilRightx1}' '#{pupilRighty1}' '#{noseTipx1}' '#{noseTipy1}' '#{mouthLeftx1}' '#{mouthLefty1}' '#{mouthRightx1}' '#{mouthRighty1}' " + "'#{top2}' '#{left2}' '#{width2}' '#{height2}' '#{pupilLeftx2}' '#{pupilLefty2}' '#{pupilRightx2}' '#{pupilRighty2}' '#{noseTipx2}' '#{noseTipy2}' '#{mouthLeftx2}' '#{mouthLefty2}' '#{mouthRightx2}' '#{mouthRighty2}' " + "'#{img_width}' '#{img_height}' '#{mode}'") 
 
 
 

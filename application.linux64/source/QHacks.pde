@@ -3,178 +3,146 @@ PImage face1;
 PImage face2;
 PImage mask1;
 PImage mask2;
-//PImage stache;
+PImage stache;
 
   int img_wdt;
   int img_hgt;
   String img_url; 
-  int top;
-  int left;
+  int top1;
+  int left1;
   int width1;
   int height1;
 
-  int midpointx;
-  int midpointy;
-  //float pupilLeftx = Float.parseFloat(args[5]);
-  //float pupilLefty = Float.parseFloat(args[6]);
-  //float pupilRightx = Float.parseFloat(args[7]);
-  //float pupilRighty = Float.parseFloat(args[8]);
-  //float noseTipx = Float.parseFloat(args[9]);
-  //float noseTipy = Float.parseFloat(args[10]);
-  //float mouthLeftx = Float.parseFloat(args[11]);
-  //float mouthLefty = Float.parseFloat(args[12]);
-  //float mouthRightx = Float.parseFloat(args[13]);
-  //float mouthRighty = Float.parseFloat(args[14]);
+  int midpointx1;
+  int midpointy1;
+  float pupilLeftx1;
+  float pupilLefty1;
+  float pupilRightx1;
+  float pupilRighty1;
+  float noseTipx1;
+  float noseTipy1;
+  float mouthLeftx1;
+  float mouthLefty1;
+  float mouthRightx1;
+  float mouthRighty1;
   
   int top2;
   int left2;
   int width2;
   int height2;
   /*
-  int top2 = Integer.parseInt(args[15]);
-  int left2 = Integer.parseInt(args[16]);
-  int width2 = Integer.parseInt(args[17]);
-  int height2 = Integer.parseInt(args[18]);
+  int top2;
+  int left2;
+  int width2;
+  int height2;
    */
 
   int midpointx2;
   int midpointy2;
 
-  //float pupilLeftx2 = Float.parseFloat(args[19]);
-  //float pupilLefty2 = Float.parseFloat(args[20]);
-  //float pupilRightx2 = Float.parseFloat(args[21]);
-  //float pupilRighty2 = Float.parseFloat(args[22]);
-  //float noseTipx2 = Float.parseFloat(args[23]);
-  //float noseTipy2 = Float.parseFloat(args[24]);
-  //float mouthLeftx2 = Float.parseFloat(args[25]);
-  //float mouthLefty2 = Float.parseFloat(args[26]);
-  //float mouthRightx2 = Float.parseFloat(args[27]);
-  //float mouthRighty2 = Float.parseFloat(args[28]);
-  //size(Integer.parseInt(args[9]),Integer.parseInt(args[10]));
+  float pupilLeftx2;
+  float pupilLefty2;
+  float pupilRightx2;
+  float pupilRighty2;
+  float noseTipx2;
+  float noseTipy2;
+  float mouthLeftx2;
+  float mouthLefty2;
+  float mouthRightx2;
+  float mouthRighty2;
+  
+  String mode;
 
 
 void setup() {
   
   
   img_url = args[0]; 
-  top = Integer.parseInt(args[1]);
-  left = Integer.parseInt(args[2]);
+  top1 = Integer.parseInt(args[1]);
+  left1 = Integer.parseInt(args[2]);
   width1 = Integer.parseInt(args[3]);
   height1 = Integer.parseInt(args[4]);
 
-  //float pupilLeftx = Float.parseFloat(args[5]);
-  //float pupilLefty = Float.parseFloat(args[6]);
-  //float pupilRightx = Float.parseFloat(args[7]);
-  //float pupilRighty = Float.parseFloat(args[8]);
-  //float noseTipx = Float.parseFloat(args[9]);
-  //float noseTipy = Float.parseFloat(args[10]);
-  //float mouthLeftx = Float.parseFloat(args[11]);
-  //float mouthLefty = Float.parseFloat(args[12]);
-  //float mouthRightx = Float.parseFloat(args[13]);
-  //float mouthRighty = Float.parseFloat(args[14]);
-  
+  pupilLeftx1 = Float.parseFloat(args[5]);
+  pupilLefty1 = Float.parseFloat(args[6]);
+  pupilRightx1 = Float.parseFloat(args[7]);
+  pupilRighty1 = Float.parseFloat(args[8]);
+  noseTipx1 = Float.parseFloat(args[9]);
+  noseTipy1 = Float.parseFloat(args[10]);
+  mouthLeftx1 = Float.parseFloat(args[11]);
+  mouthLefty1 = Float.parseFloat(args[12]);
+  mouthRightx1 = Float.parseFloat(args[13]);
+  mouthRighty1 = Float.parseFloat(args[14]);
+  /*
   top2 = Integer.parseInt(args[5]);
   left2 = Integer.parseInt(args[6]);
   width2 = Integer.parseInt(args[7]);
   height2 = Integer.parseInt(args[8]);
-  /*
-  int top2 = Integer.parseInt(args[15]);
-  int left2 = Integer.parseInt(args[16]);
-  int width2 = Integer.parseInt(args[17]);
-  int height2 = Integer.parseInt(args[18]);
-   */
+  */
+  
+  top2 = Integer.parseInt(args[15]);
+  left2 = Integer.parseInt(args[16]);
+  width2 = Integer.parseInt(args[17]);
+  height2 = Integer.parseInt(args[18]);
+   
 
-  //float pupilLeftx2 = Float.parseFloat(args[19]);
-  //float pupilLefty2 = Float.parseFloat(args[20]);
-  //float pupilRightx2 = Float.parseFloat(args[21]);
-  //float pupilRighty2 = Float.parseFloat(args[22]);
-  //float noseTipx2 = Float.parseFloat(args[23]);
-  //float noseTipy2 = Float.parseFloat(args[24]);
-  //float mouthLeftx2 = Float.parseFloat(args[25]);
-  //float mouthLefty2 = Float.parseFloat(args[26]);
-  //float mouthRightx2 = Float.parseFloat(args[27]);
-  //float mouthRighty2 = Float.parseFloat(args[28]);
-  //img_wdt=Integer.parseInt(args[9]);
-  //img_hgt=Integer.parseInt(args[10]);
-  //size(img_wdt, img_hgt);
+  pupilLeftx2 = Float.parseFloat(args[19]);
+  pupilLefty2 = Float.parseFloat(args[20]);
+  pupilRightx2 = Float.parseFloat(args[21]);
+  pupilRighty2 = Float.parseFloat(args[22]);
+  noseTipx2 = Float.parseFloat(args[23]);
+  noseTipy2 = Float.parseFloat(args[24]);
+  mouthLeftx2 = Float.parseFloat(args[25]);
+  mouthLefty2 = Float.parseFloat(args[26]);
+  mouthRightx2 = Float.parseFloat(args[27]);
+  mouthRighty2 = Float.parseFloat(args[28]);
   
   picture = loadImage(img_url);
   mask1 = loadImage("PImageMask.png");
   mask2 = loadImage("PImageMask2.png");
-  //String url = "https://d30y9cdsu7xlg0.cloudfront.net/png/1642-200.png";
-  //stache = loadImage(url, "png");
+  stache = loadImage("https://d30y9cdsu7xlg0.cloudfront.net/png/1642-200.png", "png");
 }
 
 public void settings() {
-   size(Integer.parseInt(args[9]),Integer.parseInt(args[10])); 
+   size(Integer.parseInt(args[29]),Integer.parseInt(args[30])); 
+   mode = args[31];
 }
  
 void draw() {
   background(0);
   image(picture,0,0);
-  //image(stache,mouthLeftx,(noseTipy),(mouthRightx-mouthLeftx),(mouthRighty-noseTipy));
- 
-  //fill(0,255,0);
-  //pupilLeft
-  //ellipse(pupilLeftx,pupilLefty,10,10);
-  //pupilRight
-  //ellipse(pupilRightx,pupilRighty,10,10);
-  //noseTip
-  //ellipse(noseTipx,noseTipy,10,10);
-  //mouthLeft
-  //ellipse(mouthLeftx,mouthLefty,10,10);
-  //mouthRight
-  //ellipse(mouthRightx,mouthRighty,10,10);
   
-  //faceciccle
-  //midpointx = left+(width/2);
-  //midpointy = top+(height/2);
-  //noFill();
-  //ellipse(midpointx,midpointy,width,height);
+  if (mode.equals("faceswap")) {
+    face1 = get(left1,top1,width1,height1);
+    face2 = get(left2,top2,width2,height2);
  
-  //fill(0,255,0);
-  //pupilLeft2
-  //ellipse(pupilLeftx2,pupilLefty2,10,10);
-  //pupilRight2
-  //ellipse(pupilRightx2,pupilRighty2,10,10);
-  //noseTip2
-  //ellipse(noseTipx2,noseTipy2,10,10);
-  //mouthLeft2
-  //ellipse(mouthLeftx2,mouthLefty2,10,10);
-  //mouthRight2
-  //ellipse(mouthRightx2,mouthRighty2,10,10);
- 
-  //faceciccle
-  //midpointx2 = left2+(width2/2);
-  //midpointy2 = top2+(height2/2);
-  //noFill();
-  //ellipse(midpointx2,midpointy2,width2,height2);
+    mask1.resize(face1.width, face1.height);
+    face1.mask(mask1);
   
-  
+    face1.resize(width2, height2);
    
-  face1 = get(left,top,width1,height1);
-  face2 = get(left2,top2,width2,height2);
- 
-
-  mask1.resize(face1.width, face1.height);
-  face1.mask(mask1);
+    image(face1, left2, top2);
   
-  face1.resize(width2, height2);
+    mask2.resize(face2.width, face2.height);
+    face2.mask(mask2);
+  
+    face2.resize(width1, height1);
+  
+    image(face2, left1, top1);
+  
+    saveFrame("../public/images/test_img.png");
+  }
+  
+  if (mode.equals("moustache")) {
+    image(stache,mouthLeftx1,(noseTipy1),(mouthRightx1-mouthLeftx1),(mouthRighty1-noseTipy1));
+    if (top2 != 0) { 
+      image(stache,mouthLeftx2,(noseTipy2),(mouthRightx2-mouthLeftx2),(mouthRighty2-noseTipy2));
+    }
+    
+    saveFrame("../public/images/test_img.png");
+  }
    
-  image(face1, left2, top2);
   
-  
-  
-  //blend(face1, left2, top2, width2, height2, left, top, height, width, DARKEST);
-  
-  mask2.resize(face2.width, face2.height);
-  face2.mask(mask2);
-  
-  face2.resize(width1, height1);
-  
-  image(face2, left, top);
-  
-  saveFrame("../public/images/test_img.png");
   
   exit();
 }
