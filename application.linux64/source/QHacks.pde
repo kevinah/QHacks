@@ -158,6 +158,8 @@ void draw() {
 
   mask1.resize(face1.width, face1.height);
   face1.mask(mask1);
+  
+  face1.resize(width2, height2);
    
   image(face1, left2, top2);
   
@@ -167,6 +169,8 @@ void draw() {
   
   mask2.resize(face2.width, face2.height);
   face2.mask(mask2);
+  
+  face2.resize(width1, height1);
   
   image(face2, left, top);
   

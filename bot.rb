@@ -16,31 +16,57 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["ACCESS_TOKEN"])
  
 Bot.on :message do |message|
 
+	
 	#puts request.base_url
 	#puts message.attachments.to_s
-	img_url = message.attachments[0]['payload']['url']
-	#puts img_url
+	if(message.attachments)
+		puts "we are dealing with an image"
+		
+		if(File.open('mode', &:readline) == "faceswap")
+			img_url = message.attachments[0]['payload']['url']
+				#puts img_url
 
-	dimensions = FastImage.size(img_url);
+				dimensions = FastImage.size(img_url);
 	
-	img_width = dimensions[0];
-	img_height = dimensions[1];
+				img_width = dimensions[0];
+				img_height = dimensions[1];
 	
-	puts img_width
-	puts img_height
+				puts img_width
+				puts img_height
 	
-	getCoorInfo(cog_url, img_url, http, img_width, img_height)
+				getCoorInfo(cog_url, img_url, http, img_width, img_height)
 
 	
 
-	message.reply(
-	  	attachment: {
-	    		type: 'image',
-	    		payload: {
-	      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
-	    		}
-	  	} 
-	)
+				message.reply(
+				  	attachment: {
+				    		type: 'image',
+				    		payload: {
+				      		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
+				    		}
+				  	} 
+				)
+			message.reply(text: 'You got SWAPPED!')	
+		elsif (File.open('mode', &:readline) == "moustache")
+			message.reply(text: 'moustache mode is pending...')
+		else
+			message.reply(text: 'Please set mode!')
+		end
+
+	else
+		puts "we are dealing with text"	
+		if (message.text == "FACESWAP!")
+			File.write('mode', 'faceswap')
+			message.reply(text: 'Ready to faceswap! Send an image!')
+		elsif (message.text == "GIMME STACHE!")	
+			File.write('mode', 'moustache')
+			message.reply(text: 'Ready to moustache-ify! Send an image!')
+		else
+			message.reply(text: "I didn't understand that.")
+		end
+	end
+
+
 
 =begin
 	message.reply(
