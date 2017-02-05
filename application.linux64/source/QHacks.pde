@@ -5,9 +5,8 @@ PImage mask1;
 PImage mask2;
 PImage stache;
 
-  int img_wdt;
-  int img_hgt;
-  String img_url; 
+  String img_url;
+  
   int top1;
   int left1;
   int width1;
@@ -30,15 +29,6 @@ PImage stache;
   int left2;
   int width2;
   int height2;
-  /*
-  int top2;
-  int left2;
-  int width2;
-  int height2;
-   */
-
-  int midpointx2;
-  int midpointy2;
 
   float pupilLeftx2;
   float pupilLefty2;
@@ -52,6 +42,19 @@ PImage stache;
   float mouthRighty2;
   
   String mode;
+  
+  float horiDistL1;
+  float vertDistL1;
+  float horiDistR1;
+  float vertDistR1;
+  
+  float horiDistL2;
+  float vertDistL2;
+  float horiDistR2;
+  float vertDistR2;
+  
+  float leftRotate;
+  float rightRotate;
 
 
 void setup() {
@@ -110,26 +113,29 @@ public void settings() {
  
 void draw() {
   background(0);
+  //imageMode(CENTER);
   image(picture,0,0);
   
   if (mode.equals("faceswap")) {
     face1 = get(left1,top1,width1,height1);
     face2 = get(left2,top2,width2,height2);
- 
+    
+    
+     
     mask1.resize(face1.width, face1.height);
     face1.mask(mask1);
   
     face1.resize(width2, height2);
-   
+    
     image(face1, left2, top2);
   
     mask2.resize(face2.width, face2.height);
     face2.mask(mask2);
   
     face2.resize(width1, height1);
-  
     image(face2, left1, top1);
-  
+    
+    
     saveFrame("../public/images/test_img.png");
   }
   
@@ -137,7 +143,7 @@ void draw() {
     image(stache,mouthLeftx1,(noseTipy1),(mouthRightx1-mouthLeftx1),(mouthRighty1-noseTipy1));
     if (top2 != 0) { 
       image(stache,mouthLeftx2,(noseTipy2),(mouthRightx2-mouthLeftx2),(mouthRighty2-noseTipy2));
-    }
+   }
     
     saveFrame("../public/images/test_img.png");
   }

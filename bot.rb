@@ -83,12 +83,28 @@ Bot.on :message do |message|
 		elsif (message.text == "GIMME STACHE!")	
 			File.write('mode', 'moustache')
 			message.reply(text: 'Ready to moustache-ify! Send an image!')
+		elsif (message.text == "GREEN ME!")
+			gDim = FastImage.size('https://f0d9fabc.ngrok.io/images/test_img.png');
+			gWid = gDim[0]
+			gHei = gDim[1]
+			doGreen(gWid, gHei);
+			message.reply(
+				  attachment: {
+				    	type: 'image',
+				    	payload: {
+				  		url: 'https://f0d9fabc.ngrok.io/images/test_img.png'
+			    		}
+			  	} 
+			)
 		else
 			message.reply(text: "I didn't understand that.")
 		end
 	end
-
 	#message.reply(text: 'ayy lmao')
+end
+
+def doGreen(gWid, gHei) 
+	system("./Greenify/application.linux64/Greenify '#{gWid}' '#{gHei}'")
 end
 
 def getCoorInfo(cog_url, img_url, http, img_width, img_height)  
