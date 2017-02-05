@@ -1,5 +1,6 @@
 # QHacks - SMILE QUEUE
-NEXT LEVEL APPLICATION WOW
+
+[Devpost link!](https://devpost.com/software/smile-queue)
 
 ![logo](https://github.com/kevinah/QHacks/blob/master/smile%20queue.png)
 
