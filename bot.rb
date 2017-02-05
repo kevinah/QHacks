@@ -8,6 +8,8 @@ require 'fastimage'
 cog_url = URI("https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true&returnFaceAttributes=age%2Cgender")
 emo_url = URI("https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
 
+win_percentage = 0.0;
+
 http = Net::HTTP.new(cog_url.host, cog_url.port)
 http.use_ssl = true
 http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -81,7 +83,7 @@ Bot.on :message do |message|
 			img_width = dimensions[0];
 			img_height = dimensions[1];
 
-			findHappiest(emo_url, img_url, http, img_width, img_height)
+			score = findHappiest(emo_url, img_url, http, img_width, img_height)
 
 			message.reply(
 				  	attachment: {
@@ -91,7 +93,8 @@ Bot.on :message do |message|
 				    		}
 				  	} 
 				)
-			message.reply(text: "Winner!!!")	
+			
+			message.reply(text: "Winner is #{score}% happy and is circled above!")	
 		else
 			message.reply(text: 'Please set mode!')
 		end
@@ -112,7 +115,7 @@ Bot.on :message do |message|
 			dimensions = FastImage.size('https://f0d9fabc.ngrok.io/images/test_img.png');
 			img_width = dimensions[0];
 			img_height = dimensions[1];
-			doGreen(gWid, gHei);
+			doGreen(img_width, img_height);
 			message.reply(
 				  attachment: {
 				    	type: 'image',
@@ -129,8 +132,8 @@ Bot.on :message do |message|
 	#message.reply(text: 'ayy lmao')
 end
 
-def doGreen(gWid, gHei) 
-	system("./Greenify/application.linux64/Greenify '#{gWid}' '#{gHei}'")
+def doGreen(img_width, img_height) 
+	system("./Greenify/application.linux64/Greenify '#{img_width}' '#{img_height}'")
 end
 
 def findHappiest(emo_url, img_url, http, img_width, img_height)
@@ -150,7 +153,7 @@ def findHappiest(emo_url, img_url, http, img_width, img_height)
 	top_score_index = 0
 
 	index = 0
-	puts res
+	#puts res
 	res.each do |face|
 		happiness = face['scores']['happiness']
 		if happiness > top_score
@@ -159,14 +162,15 @@ def findHappiest(emo_url, img_url, http, img_width, img_height)
 		end
 		index += 1
 	end
-	
+	#puts top_score	
+
 	top = res[top_score_index]['faceRectangle']['top']
 	left = res[top_score_index]['faceRectangle']['left']
 	width = res[top_score_index]['faceRectangle']['width']
 	height = res[top_score_index]['faceRectangle']['height']
 		
-	
 	system("./Happy/application.linux64/Happy '#{img_url}' '#{top}' '#{left}' '#{width}' '#{height}' '#{img_width}' '#{img_height}'")
+	return (top_score*100)
 end
 
 def getCoorInfo(cog_url, img_url, http, img_width, img_height)  
