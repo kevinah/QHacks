@@ -6,8 +6,12 @@
 
 It is scientifically proven that physically smiling makes you feel better mentally. This hack aims to bring people together and demonstrates that one smile can lead to many.
 
-#### How it works / feature goals
+#### How it works
 Grab a friend or two and say hello to Smile Queue. There are several modes which are guaranteed to improve the group's happiness as a whole. 
+
+[![video](https://github.com/kevinah/QHacks/blob/master/video-preview.png)](https://www.youtube.com/watch?v=xqw43WMkWvU)
+
+#### Features
 
 SMILING CONTEST!
 
